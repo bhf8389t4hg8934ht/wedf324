@@ -9013,7 +9013,7 @@ task.spawn(function()
 	local library = require(modules.Library)
 	
 	local moduleLoaderContainer = moduleLoader.new({ modules })
-	local window = library.new({ name = "Bee Swarm // BioHazard" })
+	local window = library.new({ name = "Bee Swarm // BioHazard // v1.0.1" })
 	
 	for _, tab in tabs:GetChildren() do
 		local createdTab = window:CreateTab({ name = tab.Name })
