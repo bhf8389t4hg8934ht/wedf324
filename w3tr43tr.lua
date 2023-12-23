@@ -8971,9 +8971,11 @@ modules[tbl.AutoDig] = function()
 		while true do
 			local character = client.Character
 			
-			if character then 
+			if character then
 				local tool = character:FindFirstChildOfClass("Tool")
 				getsenv(tool:WaitForChild("ClientScriptMouse")).collectStart()
+			else
+				print("char not found")
 			end
 			
 			task.wait()
@@ -8985,6 +8987,7 @@ modules[tbl.AutoDig] = function()
 			thread = task.spawn(autoDig)
 		else
 			if not thread then
+				print("no thread, returning")
 				return
 			end
 			
