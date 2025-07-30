@@ -1037,39 +1037,43 @@ modules[tbl.linoria] = function()
 		return Library:Create(_Instance, Properties);
 	end;
 	
-	function Library:MakeDraggable(Instance, Cutoff)
-		Instance.Active = true;
+	function Library:MakeDraggable(_Instance, Cutoff)
+		local UIS       = game:GetService("UserInputService")
+		local RunSvc    = game:GetService("RunService")
+		local frame     = _Instance
+		frame.Active = true
 	
-		Instance.InputBegan:Connect(function(input)
-			local isDown = input.UserInputType == Enum.UserInputType.MouseButton1
-			local isTouch = input.UserInputType == Enum.UserInputType.Touch
-			if not (isDown or isTouch) then return end
+		local dragging, dragStartPos, guiStartPos, dragInput, lastPos
 	
-			-- capture start positions
-			local startInputPos  = input.Position
-			local startGuiPos    = Instance.AbsolutePosition
-			local moveConn, endConn
+		frame.InputBegan:Connect(function(inp)
+			if inp.UserInputType == Enum.UserInputType.Touch then
+				dragging     = true
+				dragInput    = inp
+				dragStartPos = inp.Position
+				guiStartPos  = frame.Position
+			end
+		end)
 	
-			-- handle move (mouse or touch)
-			moveConn = InputService.InputChanged:Connect(function(moveInput)
-				if moveInput.UserInputType == Enum.UserInputType.MouseMovement
-					or moveInput.UserInputType == Enum.UserInputType.Touch then
-					local delta = moveInput.Position - startInputPos
-					Instance.Position = UDim2.new(
-						0, startGuiPos.X + delta.X,
-						0, startGuiPos.Y + delta.Y
-					)
-				end
-			end)
+		frame.InputEnded:Connect(function(inp)
+			if inp == dragInput then
+				dragging = false
+			end
+		end)
 	
-			-- clean up when finger/mouse lifts
-			endConn = InputService.InputEnded:Connect(function(endInput)
-				if endInput.UserInputType == Enum.UserInputType.MouseButton1
-					or endInput.UserInputType == Enum.UserInputType.Touch then
-					moveConn:Disconnect()
-					endConn:Disconnect()
-				end
-			end)
+		UIS.InputChanged:Connect(function(inp)
+			if inp == dragInput then
+				lastPos = inp.Position
+			end
+		end)
+	
+		RunSvc.RenderStepped:Connect(function()
+			if dragging and lastPos then
+				local delta = lastPos - dragStartPos
+				frame.Position = UDim2.new(
+					0, guiStartPos.X.Offset + delta.X,
+					0, guiStartPos.Y.Offset + delta.Y
+				)
+			end
 		end)
 	end;
 	
@@ -3828,7 +3832,7 @@ modules[tbl.linoria] = function()
 		if type(Config.MenuFadeTime) ~= 'number' then Config.MenuFadeTime = 0.2 end
 	
 		if typeof(Config.Position) ~= 'UDim2' then Config.Position = UDim2.fromOffset(175, 50) end
-		if typeof(Config.Size) ~= 'UDim2' then Config.Size = UDim2.fromOffset(450, 500) end
+		if typeof(Config.Size) ~= 'UDim2' then Config.Size = UDim2.fromOffset(550, 600) end
 	
 		if Config.Center then
 			Config.AnchorPoint = Vector2.new(0.5, 0.5)
