@@ -2,7 +2,7 @@
 	
 	Gui2Lua Winning! ~ Ch0nky Code:tm:
 	
-	1488 instances
+	46 instances
 	
 	-> shared.gv2.require("main").printChangelogs()
 	
@@ -3828,7 +3828,7 @@ modules[tbl.linoria] = function()
 		if type(Config.MenuFadeTime) ~= 'number' then Config.MenuFadeTime = 0.2 end
 	
 		if typeof(Config.Position) ~= 'UDim2' then Config.Position = UDim2.fromOffset(175, 50) end
-		if typeof(Config.Size) ~= 'UDim2' then Config.Size = UDim2.fromOffset(550, 600) end
+		if typeof(Config.Size) ~= 'UDim2' then Config.Size = UDim2.fromOffset(450, 500) end
 	
 		if Config.Center then
 			Config.AnchorPoint = Vector2.new(0.5, 0.5)
