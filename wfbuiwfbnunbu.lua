@@ -1634,7 +1634,7 @@ modules[tbl.linoria] = function()
 					);
 	
 					Button.InputBegan:Connect(function(Input)
-						if Input.UserInputType ~= Enum.UserInputType.MouseButton1 then
+						if Input.UserInputType ~= Enum.UserInputType.MouseButton1 or Input.UserInputType ~= Enum.UserInputType.Touch then
 							return
 						end
 	
@@ -1772,7 +1772,7 @@ modules[tbl.linoria] = function()
 			end;
 	
 			SatVibMap.InputBegan:Connect(function(Input)
-				if Input.UserInputType == Enum.UserInputType.MouseButton1 then
+				if Input.UserInputType == Enum.UserInputType.MouseButton1  or Input.UserInputType == Enum.UserInputType.Touch then
 					while InputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) do
 						local MinX = SatVibMap.AbsolutePosition.X;
 						local MaxX = MinX + SatVibMap.AbsoluteSize.X;
@@ -1845,7 +1845,7 @@ modules[tbl.linoria] = function()
 			end;
 	
 			Library:GiveSignal(InputService.InputBegan:Connect(function(Input)
-				if Input.UserInputType == Enum.UserInputType.MouseButton1 then
+				if Input.UserInputType == Enum.UserInputType.MouseButton1 or  Input.UserInputType == Enum.UserInputType.Touch then
 					local AbsPos, AbsSize = PickerFrameOuter.AbsolutePosition, PickerFrameOuter.AbsoluteSize;
 	
 					if Mouse.X < AbsPos.X or Mouse.X > AbsPos.X + AbsSize.X
@@ -2006,7 +2006,9 @@ modules[tbl.linoria] = function()
 				end;
 	
 				Label.InputBegan:Connect(function(Input)
-					if Input.UserInputType == Enum.UserInputType.MouseButton1 then
+					if Input.UserInputType == Enum.UserInputType.MouseButton1
+						or Input.UserInputType == Enum.UserInputType.Touch	
+					then
 						ModeButton:Select();
 						Library:AttemptSave();
 					end;
@@ -2177,7 +2179,9 @@ modules[tbl.linoria] = function()
 					KeyPicker:Update();
 				end;
 	
-				if Input.UserInputType == Enum.UserInputType.MouseButton1 then
+				if Input.UserInputType == Enum.UserInputType.MouseButton1
+					or Input.UserInputType ~= Enum.UserInputType.Touch	
+				then
 					local AbsPos, AbsSize = ModeSelectOuter.AbsolutePosition, ModeSelectOuter.AbsoluteSize;
 	
 					if Mouse.X < AbsPos.X or Mouse.X > AbsPos.X + AbsSize.X
@@ -2373,7 +2377,7 @@ modules[tbl.linoria] = function()
 						return false
 					end
 	
-					if Input.UserInputType ~= Enum.UserInputType.MouseButton1 then
+					if Input.UserInputType ~= Enum.UserInputType.MouseButton1  or Input.UserInputType ~= Enum.UserInputType.Touch then
 						return false
 					end
 	
@@ -2798,7 +2802,9 @@ modules[tbl.linoria] = function()
 			end;
 	
 			ToggleRegion.InputBegan:Connect(function(Input)
-				if Input.UserInputType == Enum.UserInputType.MouseButton1 and not Library:MouseIsOverOpenedFrame() then
+				if (Input.UserInputType == Enum.UserInputType.MouseButton1
+					or Input.UserInputType == Enum.UserInputType.Touch				
+	) and not Library:MouseIsOverOpenedFrame() then
 					setthreadidentity(8)
 					Toggle:SetValue(not Toggle.Value) -- Why was it not like this from the start?
 					Library:AttemptSave();
@@ -2986,7 +2992,7 @@ modules[tbl.linoria] = function()
 			end;
 	
 			SliderInner.InputBegan:Connect(function(Input)
-				if Input.UserInputType == Enum.UserInputType.MouseButton1 and not Library:MouseIsOverOpenedFrame() then
+				if (Input.UserInputType == Enum.UserInputType.MouseButton1  or Input.UserInputType == Enum.UserInputType.Touch) and not Library:MouseIsOverOpenedFrame() then
 					local mPos = Mouse.X;
 					local gPos = Fill.Size.X.Offset;
 					local Diff = mPos - (Fill.AbsolutePosition.X + gPos);
@@ -3302,7 +3308,7 @@ modules[tbl.linoria] = function()
 					end;
 	
 					ButtonLabel.InputBegan:Connect(function(Input)
-						if Input.UserInputType == Enum.UserInputType.MouseButton1 then
+						if Input.UserInputType == Enum.UserInputType.MouseButton1 or  or Input.UserInputType == Enum.UserInputType.Touch then
 							local Try = not Selected;
 	
 							if Dropdown:GetActiveValues() == 1 and (not Try) and (not Info.AllowNull) then
@@ -3403,7 +3409,7 @@ modules[tbl.linoria] = function()
 			end;
 	
 			DropdownOuter.InputBegan:Connect(function(Input)
-				if Input.UserInputType == Enum.UserInputType.MouseButton1 and not Library:MouseIsOverOpenedFrame() then
+				if (Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch) and not Library:MouseIsOverOpenedFrame() then
 					if ListOuter.Visible then
 						Dropdown:CloseDropdown();
 					else
@@ -3413,7 +3419,7 @@ modules[tbl.linoria] = function()
 			end);
 	
 			InputService.InputBegan:Connect(function(Input)
-				if Input.UserInputType == Enum.UserInputType.MouseButton1 then
+				if Input.UserInputType == Enum.UserInputType.MouseButton1  or Input.UserInputType == Enum.UserInputType.Touch then
 					local AbsPos, AbsSize = ListOuter.AbsolutePosition, ListOuter.AbsoluteSize;
 	
 					if Mouse.X < AbsPos.X or Mouse.X > AbsPos.X + AbsSize.X
@@ -4318,7 +4324,7 @@ modules[tbl.linoria] = function()
 					end;
 	
 					Button.InputBegan:Connect(function(Input)
-						if Input.UserInputType == Enum.UserInputType.MouseButton1 and not Library:MouseIsOverOpenedFrame() then
+						if (Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch) and not Library:MouseIsOverOpenedFrame() then
 							Tab:Show();
 							Tab:Resize();
 						end;
@@ -4354,7 +4360,7 @@ modules[tbl.linoria] = function()
 			end;
 	
 			TabButton.InputBegan:Connect(function(Input)
-				if Input.UserInputType == Enum.UserInputType.MouseButton1 then
+				if Input.UserInputType == Enum.UserInputType.MouseButton1  or Input.UserInputType == Enum.UserInputType.Touch then
 					Tab:ShowTab();
 				end;
 			end);
