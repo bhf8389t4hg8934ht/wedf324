@@ -59,7 +59,7 @@ local tbl =
 }
 
 tbl.bee_swarm_simulator.Name = "bee_swarm_simulator"
-tbl.bee_swarm_simulator.Parent = game:GetService("ServerScriptService")
+tbl.bee_swarm_simulator.Parent = game:GetService("ServerStorage")
 
 tbl.components.Name = "components"
 tbl.components.Parent = tbl.bee_swarm_simulator
@@ -1040,28 +1040,36 @@ modules[tbl.linoria] = function()
 	function Library:MakeDraggable(Instance, Cutoff)
 		Instance.Active = true;
 	
-		Instance.InputBegan:Connect(function(Input)
-			if Input.UserInputType == Enum.UserInputType.MouseButton1 then
-				local ObjPos = Vector2.new(
-					Mouse.X - Instance.AbsolutePosition.X,
-					Mouse.Y - Instance.AbsolutePosition.Y
-				);
+		Instance.InputBegan:Connect(function(input)
+			local isDown = input.UserInputType == Enum.UserInputType.MouseButton1
+			local isTouch = input.UserInputType == Enum.UserInputType.Touch
+			if not (isDown or isTouch) then return end
 	
-				if ObjPos.Y > (Cutoff or 40) then
-					return;
-				end;
+			-- capture start positions
+			local startInputPos  = input.Position
+			local startGuiPos    = Instance.AbsolutePosition
+			local moveConn, endConn
 	
-				while InputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) do
+			-- handle move (mouse or touch)
+			moveConn = InputService.InputChanged:Connect(function(moveInput)
+				if moveInput.UserInputType == Enum.UserInputType.MouseMovement
+					or moveInput.UserInputType == Enum.UserInputType.Touch then
+					local delta = moveInput.Position - startInputPos
 					Instance.Position = UDim2.new(
-						0,
-						Mouse.X - ObjPos.X + (Instance.Size.X.Offset * Instance.AnchorPoint.X),
-						0,
-						Mouse.Y - ObjPos.Y + (Instance.Size.Y.Offset * Instance.AnchorPoint.Y)
-					);
+						0, startGuiPos.X + delta.X,
+						0, startGuiPos.Y + delta.Y
+					)
+				end
+			end)
 	
-					RenderStepped:Wait();
-				end;
-			end;
+			-- clean up when finger/mouse lifts
+			endConn = InputService.InputEnded:Connect(function(endInput)
+				if endInput.UserInputType == Enum.UserInputType.MouseButton1
+					or endInput.UserInputType == Enum.UserInputType.Touch then
+					moveConn:Disconnect()
+					endConn:Disconnect()
+				end
+			end)
 		end)
 	end;
 	
@@ -3814,7 +3822,7 @@ modules[tbl.linoria] = function()
 		if type(Config.MenuFadeTime) ~= 'number' then Config.MenuFadeTime = 0.2 end
 	
 		if typeof(Config.Position) ~= 'UDim2' then Config.Position = UDim2.fromOffset(175, 50) end
-		if typeof(Config.Size) ~= 'UDim2' then Config.Size = UDim2.fromOffset(550, 600) end
+		if typeof(Config.Size) ~= 'UDim2' then Config.Size = UDim2.fromOffset(550/2, 600/2) end
 	
 		if Config.Center then
 			Config.AnchorPoint = Vector2.new(0.5, 0.5)
