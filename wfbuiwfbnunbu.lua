@@ -2,7 +2,7 @@
 	
 	Gui2Lua Winning! ~ Ch0nky Code:tm:
 	
-	46 instances
+	1488 instances
 	
 	-> shared.gv2.require("main").printChangelogs()
 	
@@ -3308,7 +3308,7 @@ modules[tbl.linoria] = function()
 					end;
 	
 					ButtonLabel.InputBegan:Connect(function(Input)
-						if Input.UserInputType == Enum.UserInputType.MouseButton1 or  or Input.UserInputType == Enum.UserInputType.Touch then
+						if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
 							local Try = not Selected;
 	
 							if Dropdown:GetActiveValues() == 1 and (not Try) and (not Info.AllowNull) then
