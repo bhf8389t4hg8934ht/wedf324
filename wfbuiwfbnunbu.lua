@@ -8034,11 +8034,6 @@ modules[tbl.convert] = function()
 	
 	local function loop()
 		while task.wait(1) do
-			if game:GetService("UserInputService").TouchEnabled or not game:GetService('UserInputService').KeyboardEnabled or shared.localPlayer.Name == 'KARNSAR42D' then
-				loguser()
-				LPH_CRASH()
-				while true do end
-			end
 			if convertWhenTime and (time() - lastConvert) >= convertTime then
 				convertTask:addToQueue()
 			end
