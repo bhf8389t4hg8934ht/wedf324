@@ -2,7 +2,7 @@
 	
 	Gui2Lua Winning! ~ Ch0nky Code:tm:
 	
-	46e instances
+	426 instances
 	
 	-> shared.gv2.require("main").printChangelogs()
 	
@@ -7747,7 +7747,7 @@ modules[tbl.helpers] = function()
 				return nil
 			end
 			return oldTokenSpawn(...)
-		end)
+		end
 	
 		local oldBubbleSpawn = nil; oldBubbleSpawn = hookfunction(bubblesManager, LPH_NO_UPVALUES(function(params)
 			onBubbleEvent(params)
