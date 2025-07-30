@@ -2,7 +2,7 @@
 	
 	Gui2Lua Winning! ~ Ch0nky Code:tm:
 	
-	46 instances
+	46e instances
 	
 	-> shared.gv2.require("main").printChangelogs()
 	
@@ -5850,21 +5850,12 @@ modules[tbl.homeTab] = function()
 	
 		local fxModule = require(game.ReplicatedStorage.LocalFX)
 		local blacklistedBlocks = {"ScorchingStar", 'PopStar', 'LocalFlames', 'Bubble', 'FallingStar', 'LocalTargetPracticeBeam', 'BeesmasLightsFallingStar'}
-		LPH_NO_VIRTUALIZE(function()
-			local function proxy_function(func)
-				return function(...)
-					return func(...);
-				end
-			end
-	
-			
-		local old = nil; old = hookfunction(fxModule.ClientRun, proxy_function(function(fxType, params)	
+		local old = fxModule.ClientRun; fxModule.ClientRun = function(fxType, params)	
 			if removeFx and not table.find(blacklistedBlocks, fxType) then
 				return nil
 			end
 			return old(fxType, params)
-		end))
-		end)()
+		end
 		-- complex script i skidded online!!!!
 		game.CoreGui:WaitForChild('RobloxPromptGui')
 	
@@ -6736,7 +6727,7 @@ modules[tbl.autofarm] = function()
 		
 		autofarmHelpers.init()
 		autofarmTask = taskSystem.new("Autofarm", 1, startAutofarm, endAutofarm)
-		local old = nil; old = hookfunction(preciseCrosshairsModule.Make, LPH_NO_UPVALUES(function(...)
+		local old = preciseCrosshairsModule.Make; preciseCrosshairsModule.Make = function(...)
 			local params = ...;
 	
 			if params.Player == shared.localPlayer and autofarmSettings.doPrecise then
@@ -6751,7 +6742,7 @@ modules[tbl.autofarm] = function()
 			end
 	
 			return old(...);
-		end))
+		end
 	
 		local oldFallingStar = nil; oldFallingStar = hookfunction(fallingStars, LPH_NO_UPVALUES(function(t)
 			if t.Target == shared.localPlayer and autofarmSettings.starShower then
@@ -7751,12 +7742,12 @@ modules[tbl.helpers] = function()
 		
 		local markIds = {}
 		
-		local oldTokenSpawn = nil; oldTokenSpawn = hookfunction(collectiblesAnimator.Spawn, LPH_NO_UPVALUES(function(...)
+		local oldTokenSpawn = collectiblesAnimator.Spawn; collectiblesAnimator.Spawn = function(...)
 			if extras.hideTokens then
 				return nil
 			end
 			return oldTokenSpawn(...)
-		end))
+		end)
 	
 		local oldBubbleSpawn = nil; oldBubbleSpawn = hookfunction(bubblesManager, LPH_NO_UPVALUES(function(params)
 			onBubbleEvent(params)
@@ -7769,35 +7760,28 @@ modules[tbl.helpers] = function()
 		local markIds = {}
 	
 		
-		LPH_NO_VIRTUALIZE(function()
-			function proxy_function(func)
-				return function(...)
-					return func(...)
-				end
-			end
-		local oldSpawn = nil; oldSpawn = hookfunction(stationManager.Actions.Spawn, proxy_function(function(p)
-			if not p.Targets or table.find(p.Targets, shared.localPlayer) then
-				markCount += 1
-				table.insert(markIds, p.Id)
-			end
-			return oldSpawn(p)
-		end))
+	local oldSpawn = stationManager.Actions.Spawn; stationManager.Actions.Spawn = function(p)
+		if not p.Targets or table.find(p.Targets, shared.localPlayer) then
+			markCount += 1
+			table.insert(markIds, p.Id)
+		end
+		return oldSpawn(p)
+	end
 	
-		local oldDestroy = nil; oldDestroy = hookfunction(stationManager.Actions.Destroy, proxy_function(function(p)
-			if table.find(markIds, p.Id) then	
-				markCount -= 1
-			end
-			return oldDestroy(p)
-		end))
-			local oldDestroyFlame = nil; oldDestroyFlame = hookfunction(localFlames.DestroyFlame, proxy_function(function(id)
-				local exist = table.find(flameids, id)
-				if exist then
-					table.remove(flameids, exist)
-				end
-				return oldDestroyFlame(id)
-			end))
-		end)()
-		local oldAddFlame = nil; oldAddFlame = hookfunction(localFlames.AddFlame, LPH_NO_UPVALUES(function(...)
+	local oldDestroy = stationManager.Actions.Destroy; stationManager.Actions.Destroy = function(p)
+		if table.find(markIds, p.Id) then	
+			markCount -= 1
+		end
+		return oldDestroy(p)
+	end
+	local oldDestroyFlame = localFlames.DestroyFlame localFlames.DestroyFlame = function(id)
+		local exist = table.find(flameids, id)
+		if exist then
+			table.remove(flameids, exist)
+		end
+		return oldDestroyFlame(id)
+	end
+	local oldAddFlame = localFlames.AddFlame; localFlames.AddFlame = function(...)
 			local p = {...}
 			local id = p[3]
 					
@@ -7805,7 +7789,7 @@ modules[tbl.helpers] = function()
 				table.insert(flameids, id)
 			end
 			return oldAddFlame(...)
-		end))
+		end
 		
 		
 		
